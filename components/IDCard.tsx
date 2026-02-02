@@ -2,7 +2,7 @@
 import React from 'react';
 import { Student, CardConfig } from '../types';
 import { RemoteImage } from './Logo';
-import { User, Calendar } from 'lucide-react';
+import { User } from 'lucide-react';
 
 interface IDCardProps {
   student: Student;
@@ -80,7 +80,7 @@ const IDCard: React.FC<IDCardProps> = ({ student, config, id }) => {
         </div>
 
         {/* 2. Photo Section (Overlapping) */}
-        <div className="relative z-20 -mt-12 flex justify-center mb-4">
+        <div className="relative z-20 -mt-12 flex justify-center mb-2 shrink-0">
             <div 
               className="w-40 h-40 rounded-full border-[6px] shadow-xl overflow-hidden bg-slate-200 flex items-center justify-center relative"
               style={{ borderColor: config.cardBgColor }}
@@ -90,31 +90,24 @@ const IDCard: React.FC<IDCardProps> = ({ student, config, id }) => {
             </div>
         </div>
 
-        {/* 3. Student Identity */}
-        <div className="text-center px-6 mb-8 flex-1 flex flex-col items-center">
+        {/* 3. Student Identity - Flexible height but constrained */}
+        <div className="text-center px-6 mb-4 flex-shrink-0">
             <h2 
-              className="text-3xl font-black uppercase tracking-tight leading-none mb-3 drop-shadow-lg" 
+              className="text-3xl font-black uppercase tracking-tight leading-none drop-shadow-lg line-clamp-2" 
               style={{ color: config.textColor }}
             >
               {student.name}
             </h2>
-            
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/10 backdrop-blur-sm">
-               <span className="text-[10px] font-black uppercase tracking-widest opacity-80" style={{ color: config.labelColor }}>
-                 {config.labelId}
-               </span>
-               <span className="text-sm font-mono font-bold" style={{ color: config.accentColor }}>
-                 {student.studentId}
-               </span>
-            </div>
         </div>
 
-        {/* 4. Details Grid */}
-        <div className="w-full px-8 pb-8">
+        {/* 4. Details Box - Pushed to bottom with auto margin if needed, but flex-1 above handles it */}
+        <div className="w-full px-8 pb-8 mt-auto">
             <div className="bg-white/5 rounded-2xl border border-white/5 p-5 backdrop-blur-sm shadow-inner">
-               <div className="grid grid-cols-2 gap-y-6 gap-x-4">
+               
+               {/* Grid for Main Details */}
+               <div className="grid grid-cols-2 gap-y-5 gap-x-4 mb-5">
                   
-                  {/* Class (No Icon) - Centered */}
+                  {/* Class - Centered */}
                   <div className="flex flex-col items-center justify-center text-center">
                     <p className="text-[9px] font-black uppercase tracking-widest opacity-50 mb-0.5" style={{ color: config.labelColor }}>
                       {config.labelClass}
@@ -124,7 +117,7 @@ const IDCard: React.FC<IDCardProps> = ({ student, config, id }) => {
                     </p>
                   </div>
 
-                  {/* Section (No Icon) - Centered */}
+                  {/* Section - Centered */}
                   <div className="flex flex-col items-center justify-center text-center">
                     <p className="text-[9px] font-black uppercase tracking-widest opacity-50 mb-0.5" style={{ color: config.labelColor }}>
                       {config.labelSection}
@@ -134,9 +127,19 @@ const IDCard: React.FC<IDCardProps> = ({ student, config, id }) => {
                     </p>
                   </div>
 
-                  {/* Contact (No Icon, with N/A fallback) - Centered */}
+                  {/* Student ID - Centered */}
+                  <div className="flex flex-col items-center justify-center text-center">
+                    <p className="text-[9px] font-black uppercase tracking-widest opacity-50 mb-0.5" style={{ color: config.labelColor }}>
+                      {config.labelId}
+                    </p>
+                    <p className="text-sm font-bold leading-none font-mono" style={{ color: config.detailsColor }}>
+                      {student.studentId}
+                    </p>
+                  </div>
+
+                  {/* Contact - Centered */}
                   {config.showContact && (
-                    <div className="pt-4 border-t border-white/5 flex flex-col items-center justify-center text-center">
+                    <div className="flex flex-col items-center justify-center text-center">
                         <p className="text-[9px] font-black uppercase tracking-widest opacity-50 mb-0.5" style={{ color: config.labelColor }}>
                           {config.labelContact}
                         </p>
@@ -146,32 +149,39 @@ const IDCard: React.FC<IDCardProps> = ({ student, config, id }) => {
                     </div>
                   )}
 
-                  {/* Issued On (New Field - Right of Contact) - Centered */}
-                  <div className="pt-4 border-t border-white/5 flex flex-col items-center justify-center text-center">
-                      <p className="text-[9px] font-black uppercase tracking-widest opacity-50 mb-0.5" style={{ color: config.labelColor }}>
+               </div>
+
+               {/* Divider */}
+               <div className="h-px w-full bg-white/10 mb-4"></div>
+
+               {/* Footer Dates */}
+               <div className="flex items-end justify-between px-2">
+                   {/* Issued */}
+                   <div className="flex flex-col items-start">
+                      <p className="text-[8px] font-black uppercase tracking-widest opacity-50 mb-0.5" style={{ color: config.labelColor }}>
                         {config.labelIssued}
                       </p>
-                      <p className="text-sm font-bold leading-none" style={{ color: config.detailsColor }}>
+                      <p className="text-xs font-bold leading-none" style={{ color: config.detailsColor }}>
                         {config.issuedYear}
                       </p>
-                  </div>
-
-                  {/* Validity Footer (Spans full width) */}
-                  <div className="col-span-2 flex items-center justify-center gap-2 mt-1">
-                     <div className="flex items-center gap-1.5 opacity-60">
-                        <Calendar size={10} style={{ color: config.labelColor }} />
-                        <span className="text-[9px] font-bold uppercase" style={{ color: config.labelColor }}>
-                          {config.labelValid}: {config.validUntil}
-                        </span>
-                     </div>
-                  </div>
-
+                   </div>
+                   
+                   {/* Valid */}
+                   <div className="flex flex-col items-end">
+                      <p className="text-[8px] font-black uppercase tracking-widest opacity-50 mb-0.5" style={{ color: config.labelColor }}>
+                        {config.labelValid}
+                      </p>
+                      <p className="text-xs font-bold leading-none" style={{ color: config.accentColor }}>
+                        {config.validUntil}
+                      </p>
+                   </div>
                </div>
+
             </div>
         </div>
 
         {/* Bottom Accent Line */}
-        <div className="h-2 w-full" style={{ backgroundColor: config.accentColor }}></div>
+        <div className="h-2 w-full shrink-0" style={{ backgroundColor: config.accentColor }}></div>
 
       </div>
     </div>
