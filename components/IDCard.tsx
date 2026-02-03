@@ -15,7 +15,8 @@ const IDCard: React.FC<IDCardProps> = ({ student, config, id }) => {
   const cardStyle: React.CSSProperties = {
     backgroundColor: config.cardBgColor,
     color: config.textColor,
-    borderColor: 'rgba(30, 41, 59, 1)', // slate-800
+    borderColor: '#d1d5db', // gray-300
+    borderWidth: '1px',
     printColorAdjust: 'exact',
     WebkitPrintColorAdjust: 'exact',
   };
@@ -35,7 +36,7 @@ const IDCard: React.FC<IDCardProps> = ({ student, config, id }) => {
     <div id={id} className="id-card-inner-wrapper flex items-center justify-center p-4 bg-transparent rounded-xl">
       {/* FRONT SIDE ONLY - 80mm x 136mm -> 400px x 680px (1:5 Scale) */}
       <div 
-        className="id-card-front relative w-[400px] h-[680px] rounded-[20px] overflow-hidden shadow-2xl flex flex-col shrink-0 border-[0px]"
+        className="id-card-front relative w-[400px] h-[680px] rounded-[20px] overflow-hidden shadow-2xl flex flex-col shrink-0"
         style={cardStyle}
       >
         {/* Background Pattern */}
@@ -179,9 +180,6 @@ const IDCard: React.FC<IDCardProps> = ({ student, config, id }) => {
 
             </div>
         </div>
-
-        {/* Bottom Accent Line */}
-        <div className="h-2 w-full shrink-0" style={{ backgroundColor: config.accentColor }}></div>
 
       </div>
     </div>
