@@ -221,7 +221,16 @@ const App: React.FC = () => {
 
           // Calculate Position in 2x2 Grid
           const indexOnPage = i % ITEMS_PER_PAGE;
-          const colIndex = indexOnPage % GRID_COLS; // 0 or 1
+          
+          // Original column index (0 for Left, 1 for Right)
+          const originalColIndex = indexOnPage % GRID_COLS; 
+          
+          // FLIPPED Logic: 
+          // If original is 0 (Left), we want it on Right (1).
+          // If original is 1 (Right), we want it on Left (0).
+          // This ensures that when printed and flipped, it aligns with a standard L-R back page.
+          const colIndex = (GRID_COLS - 1) - originalColIndex;
+
           const rowIndex = Math.floor(indexOnPage / GRID_COLS); // 0 or 1
 
           const x = MARGIN_LEFT + (colIndex * (CARD_WIDTH + GAP_X));
@@ -246,7 +255,7 @@ const App: React.FC = () => {
         }
       }
 
-      doc.save('QwickAttend_Fronts_Only.pdf');
+      doc.save('QwickAttend_Fronts_Mirrored.pdf');
 
     } catch (error) {
       console.error("PDF Generation failed", error);
